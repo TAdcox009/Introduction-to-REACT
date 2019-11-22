@@ -117,34 +117,74 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"index.js":[function(require,module,exports) {
-"use strict";
+})({"../../../../../.npm/_npx/13979/lib/node_modules/parcel/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Welcome = void 0;
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
 
-var _react = _interopRequireDefault(require("react"));
+  return bundleURL;
+}
 
-var _reactDom = _interopRequireDefault(require("react-dom"));
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
 
-var _App = _interopRequireDefault(require("./App"));
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  return '/';
+}
 
-var Welcome = function Welcome(props) {
-  return _react.default.createElement("h1", null, "Hello, ", props.name, " ");
-};
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
 
-exports.Welcome = Welcome;
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../../../.npm/_npx/13979/lib/node_modules/parcel/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
 
-_reactDom.default.render(_react.default.createElement(Welcome, {
-  name: "session 2"
-}), document.getElementById('app'));
+function updateLink(link) {
+  var newLink = link.cloneNode();
 
-_reactDom.default.render(_react.default.createElement("p", null, "i want break"), document.getElementById('app'));
-},{}],"../../../../../.npm/_npx/13979/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../../../../../.npm/_npx/13979/lib/node_modules/parcel/src/builtins/bundle-url.js"}],"../../../../../.npm/_npx/13979/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -348,5 +388,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../.npm/_npx/13979/lib/node_modules/parcel/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/02-Parcel.e31bb0bc.js.map
+},{}]},{},["../../../../../.npm/_npx/13979/lib/node_modules/parcel/src/builtins/hmr-runtime.js"], null)
+//# sourceMappingURL=/app.ae05fb60.js.map
